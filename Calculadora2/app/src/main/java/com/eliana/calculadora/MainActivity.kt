@@ -43,15 +43,18 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                 }
-
-                txt_actual.text = if (error) "ERROR" else respuesta.toString()
+                oper = 0
                 txt_anterior.text = ""
+                txt_actual.text = ""
+                txt_actual.hint = if (error) "ERROR" else respuesta.toString()
+
             }
         }
 
         btnBorrar.setOnClickListener {
             txt_anterior.text = ""
             txt_actual.text = ""
+            txt_actual.hint = "0.0"
             numero = 0.0
             oper = 0
         }
