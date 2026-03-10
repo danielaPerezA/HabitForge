@@ -26,7 +26,8 @@ class MainActivity : AppCompatActivity() {
         val btnIgual: Button = findViewById(R.id.btnIgual)
 
         btnIgual.setOnClickListener {
-            var numeroDos: Double = txt_actual.text.toString().toDouble()
+            var error: Boolean = false
+            var numeroDos: Double = if (txt_actual.text.toString().isEmpty()) 0.0 else txt_actual.text.toString().toDouble()
             var respuesta: Double = 0.0
 
             if (oper != 0){
@@ -34,10 +35,16 @@ class MainActivity : AppCompatActivity() {
                     1 -> respuesta = numero + numeroDos
                     2 -> respuesta = numero - numeroDos
                     3 -> respuesta = numero * numeroDos
-                    4 -> respuesta = numero / numeroDos
+                    4 ->{
+                        if (numeroDos != 0.0){
+                            respuesta = numero / numeroDos
+                        }else{
+                            error = true
+                        }
+                    }
                 }
 
-                txt_actual.text = respuesta.toString()
+                txt_actual.text = if (error) "ERROR" else respuesta.toString()
                 txt_anterior.text = ""
             }
         }
