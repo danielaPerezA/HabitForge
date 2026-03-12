@@ -8,7 +8,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
-    // 0-> nada, 1-> suma, 2-> resta, 3-> mult, 4-> división
     var oper: Int = 0
     var numero: Double = 0.0
     lateinit var txt_anterior: TextView
@@ -26,7 +25,9 @@ class MainActivity : AppCompatActivity() {
         val btnIgual: Button = findViewById(R.id.btnIgual)
 
         btnIgual.setOnClickListener {
-            val numeroDos = txt_actual.text.toString().toDoubleOrNull() ?: return@setOnClickListener
+            val numeroDos = txt_actual.text.toString()
+                .replace(",", "")
+                .toDoubleOrNull() ?: return@setOnClickListener
             var respuesta = 0.0
 
             if (oper != 0) {
@@ -61,27 +62,28 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun formatearResultado(valor: Double): String {
-        return if (valor == valor.toLong().toDouble()) {
+        val resultado = if (valor == valor.toLong().toDouble()) {
             valor.toLong().toString()
         } else {
             valor.toString()
         }
+        return formatearConPuntos(resultado)
     }
 
     fun presionarDigito(view: View) {
-        val numeroActual: String = txt_actual.text.toString()
+        val numeroActual: String = txt_actual.text.toString().replace(",", "")
 
         when (view.id) {
-            R.id.btnCero -> txt_actual.text = numeroActual + "0"
-            R.id.btnUno -> txt_actual.text = numeroActual + "1"
-            R.id.btnDos -> txt_actual.text = numeroActual + "2"
-            R.id.btnTres -> txt_actual.text = numeroActual + "3"
-            R.id.btnCuatro -> txt_actual.text = numeroActual + "4"
-            R.id.btnCInco -> txt_actual.text = numeroActual + "5"
-            R.id.btnSeis -> txt_actual.text = numeroActual + "6"
-            R.id.btnSiete -> txt_actual.text = numeroActual + "7"
-            R.id.btnOcho -> txt_actual.text = numeroActual + "8"
-            R.id.btnNueve -> txt_actual.text = numeroActual + "9"
+            R.id.btnCero -> txt_actual.text = formatearConPuntos(numeroActual + "0")
+            R.id.btnUno -> txt_actual.text = formatearConPuntos(numeroActual + "1")
+            R.id.btnDos -> txt_actual.text = formatearConPuntos(numeroActual + "2")
+            R.id.btnTres -> txt_actual.text = formatearConPuntos(numeroActual + "3")
+            R.id.btnCuatro -> txt_actual.text = formatearConPuntos(numeroActual + "4")
+            R.id.btnCInco -> txt_actual.text = formatearConPuntos(numeroActual + "5")
+            R.id.btnSeis -> txt_actual.text = formatearConPuntos(numeroActual + "6")
+            R.id.btnSiete -> txt_actual.text = formatearConPuntos(numeroActual + "7")
+            R.id.btnOcho -> txt_actual.text = formatearConPuntos(numeroActual + "8")
+            R.id.btnNueve -> txt_actual.text = formatearConPuntos(numeroActual + "9")
             R.id.btnPunto -> {
                 if (!numeroActual.contains(".")) {
                     txt_actual.text = if (numeroActual.isEmpty()) "0." else "$numeroActual."
@@ -91,28 +93,24 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun clickOperacion(view: View) {
-        val numeroDos = txt_actual.text.toString().toDoubleOrNull() ?: return
+        val numeroDos = txt_actual.text.toString()
+            .replace(",", "").toDoubleOrNull() ?: return
         numero = numeroDos
         val numeroTexto = txt_actual.text.toString()
         txt_actual.setText("")
 
         when (view.id) {
-            R.id.btnSumar -> {
-                txt_anterior.setText("$numeroTexto +")
-                oper = 1
-            }
-            R.id.btnMenos -> {
-                txt_anterior.setText("$numeroTexto -")
-                oper = 2
-            }
-            R.id.btnMultiplicacion -> {
-                txt_anterior.setText("$numeroTexto x")
-                oper = 3
-            }
-            R.id.btnDivision -> {
-                txt_anterior.setText("$numeroTexto /")
-                oper = 4
-            }
+            R.id.btnSumar -> { txt_anterior.setText("$numeroTexto +"); oper = 1 }
+            R.id.btnMenos -> { txt_anterior.setText("$numeroTexto -"); oper = 2 }
+            R.id.btnMultiplicacion -> { txt_anterior.setText("$numeroTexto x"); oper = 3 }
+            R.id.btnDivision -> { txt_anterior.setText("$numeroTexto /"); oper = 4 }
         }
+    }
+
+    private fun formatearConPuntos(numero: String): String {
+        if (numero.contains(".")) return numero
+        return numero.toLongOrNull()?.let {
+            "%,d".format(it)
+        } ?: numero
     }
 }
