@@ -8,7 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
-    //0-> nada, 1-> suma, 2, resta 3-> mult, 4->división
+    // 0-> nada, 1-> suma, 2-> resta, 3-> mult, 4-> división
     var oper: Int = 0
     var numero: Double = 0.0
     lateinit var txt_anterior: TextView
@@ -22,23 +22,33 @@ class MainActivity : AppCompatActivity() {
         txt_actual = findViewById(R.id.txtActual)
         txt_anterior = findViewById(R.id.txtAnterior)
 
-        val btnBorrar : Button = findViewById(R.id.btnBorrar)
+        val btnBorrar: Button = findViewById(R.id.btnBorrar)
         val btnIgual: Button = findViewById(R.id.btnIgual)
 
         btnIgual.setOnClickListener {
-            var numeroDos: Double = txt_actual.text.toString().toDouble()
-            var respuesta: Double = 0.0
+            val numeroDos = txt_actual.text.toString().toDoubleOrNull() ?: return@setOnClickListener
+            var respuesta = 0.0
 
-            if (oper != 0){
-                when(oper){
+            if (oper != 0) {
+                when (oper) {
                     1 -> respuesta = numero + numeroDos
                     2 -> respuesta = numero - numeroDos
                     3 -> respuesta = numero * numeroDos
-                    4 -> respuesta = numero / numeroDos
+                    4 -> {
+                        if (numeroDos == 0.0) {
+                            txt_actual.text = "Error"
+                            txt_anterior.text = ""
+                            oper = 0
+                            return@setOnClickListener
+                        }
+                        respuesta = numero / numeroDos
+                    }
                 }
 
-                txt_actual.text = respuesta.toString()
+                txt_actual.text = formatearResultado(respuesta)
                 txt_anterior.text = ""
+                oper = 0
+                numero = 0.0
             }
         }
 
@@ -50,11 +60,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun presionarDigito(view: View){
-   //     val txt_actual: TextView = findViewById(R.id.txtActual) esto se comenta en el video debudo a la creación de la variable global
-        var numeroActual: String = txt_actual.text.toString().toString()
+    private fun formatearResultado(valor: Double): String {
+        return if (valor == valor.toLong().toDouble()) {
+            valor.toLong().toString()
+        } else {
+            valor.toString()
+        }
+    }
 
-        when(view.id){
+    fun presionarDigito(view: View) {
+        val numeroActual: String = txt_actual.text.toString()
+
+        when (view.id) {
             R.id.btnCero -> txt_actual.text = numeroActual + "0"
             R.id.btnUno -> txt_actual.text = numeroActual + "1"
             R.id.btnDos -> txt_actual.text = numeroActual + "2"
@@ -65,29 +82,35 @@ class MainActivity : AppCompatActivity() {
             R.id.btnSiete -> txt_actual.text = numeroActual + "7"
             R.id.btnOcho -> txt_actual.text = numeroActual + "8"
             R.id.btnNueve -> txt_actual.text = numeroActual + "9"
-            R.id.btnPunto -> txt_actual.text = numeroActual + "."
+            R.id.btnPunto -> {
+                if (!numeroActual.contains(".")) {
+                    txt_actual.text = if (numeroActual.isEmpty()) "0." else "$numeroActual."
+                }
+            }
         }
     }
 
-    fun clickOperacion(view: View){
-        numero = txt_actual.text.toString().toDouble()
-        var numeroDos: String = txt_actual.text.toString()
+    fun clickOperacion(view: View) {
+        val numeroDos = txt_actual.text.toString().toDoubleOrNull() ?: return
+        numero = numeroDos
+        val numeroTexto = txt_actual.text.toString()
         txt_actual.setText("")
-        when(view.id){
+
+        when (view.id) {
             R.id.btnSumar -> {
-                txt_anterior.setText(numeroDos + "+")
+                txt_anterior.setText("$numeroTexto +")
                 oper = 1
             }
             R.id.btnMenos -> {
-                txt_anterior.setText(numeroDos + "-")
+                txt_anterior.setText("$numeroTexto -")
                 oper = 2
             }
             R.id.btnMultiplicacion -> {
-                txt_anterior.setText(numeroDos + "x")
+                txt_anterior.setText("$numeroTexto x")
                 oper = 3
             }
-            R.id.btnDivision ->{
-                txt_anterior.setText(numeroDos + "/")
+            R.id.btnDivision -> {
+                txt_anterior.setText("$numeroTexto /")
                 oper = 4
             }
         }
