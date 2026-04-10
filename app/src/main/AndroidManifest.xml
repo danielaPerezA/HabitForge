@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ============================================================
+     HabitForge — AndroidManifest.xml
+     Archivo: app/src/main/AndroidManifest.xml
+     ============================================================ -->
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Permisos de red (para cuando se integre el backend) -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- Permiso para notificaciones (futuras alertas de racha) -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <application
+        android:name=".HabitForgeApp"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.HabitForge">
+
+        <!-- MainActivity — punto de entrada único (Single Activity) -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.HabitForge"
+            android:windowSoftInputMode="adjustResize">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+    </application>
+
+</manifest>
+
+    <!--
+    =================================================================
+    ARCHIVO: app/src/main/res/values/strings.xml
+    =================================================================
+    -->
+
+    <!-- strings.xml -->
+    <!--
+    <resources>
+        <string name="app_name">HabitForge</string>
+        <string name="tagline">The Adventure of Being You</string>
+
+        - Gym Dashboard
+        <string name="gym_title">Rutinas del Gimnasio</string>
+        <string name="streak_label">Racha de entrenamiento</string>
+        <string name="days_this_week">días esta semana</string>
+        <string name="days_this_month">días este mes</string>
+        <string name="days_this_year">días este año</string>
+        <string name="weekly_goal">Meta de días a la semana</string>
+        <string name="monthly_goal">Meta de días al mes</string>
+        <string name="yearly_goal">Meta de días al año</string>
+        <string name="most_trained">Más trabajado</string>
+        <string name="monthly_progress">Progreso mensual del gym</string>
+        <string name="annual_goal">Meta anual de entrenamiento</string>
+        <string name="accumulated_progress">Progreso acumulado del año</string>
+
+        - Días de la semana (igual a MyOdesy — en inglés)
+        <string name="day_mon">Mon</string>
+        <string name="day_tue">Tue</string>
+        <string name="day_wed">Wed</string>
+        <string name="day_thu">Thu</string>
+        <string name="day_fri">Fri</string>
+        <string name="day_sat">Sat</string>
+        <string name="day_sun">Sun</string>
+
+        - Categorías musculares (iguales a MyOdesy)
+        <string name="category_chest">Pecho</string>
+        <string name="category_back">Espalda</string>
+        <string name="category_legs">Piernas</string>
+        <string name="category_shoulders">Hombros</string>
+        <string name="category_arms">Brazos</string>
+        <string name="category_abs">Abdomen</string>
+        <string name="category_full_body">Cuerpo completo</string>
+        <string name="category_cardio">Cardio</string>
+
+        - Acciones
+        <string name="btn_edit">Editar</string>
+        <string name="btn_save">Guardar datos</string>
+        <string name="btn_access">access</string>
+        <string name="btn_login">Login</string>
+        <string name="btn_register">Sign Up</string>
+    </resources>
+    -->
+
+    <!--
+    =================================================================
+    ARCHIVO: app/src/main/res/values/themes.xml
+    =================================================================
+
+    <resources>
+        - Tema base de la app (Material 3 — sin colores, Compose los maneja)
+        <style name="Theme.HabitForge" parent="Theme.Material3.DayNight.NoActionBar" />
+
+        - Tema del Splash Screen
+        <style name="Theme.HabitForge.Splash" parent="Theme.SplashScreen">
+            <item name="windowSplashScreenBackground">#8B5E3C</item>  Marrón de MyOdesy
+            <item name="windowSplashScreenAnimatedIcon">@drawable/ic_habitforge_logo</item>
+            <item name="postSplashScreenTheme">@style/Theme.HabitForge</item>
+        </style>
+    </resources>
+    -->
